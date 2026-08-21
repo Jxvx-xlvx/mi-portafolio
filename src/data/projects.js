@@ -1,0 +1,42 @@
+export const projectsData = [
+  {
+    id: "siga-tec",
+    title: "SIGA-TEC",
+    category: "Full Stack / Arquitectura",
+    description: "Sistema Integral de Gestión de Agua para SOAPATEC. Plataforma orientada a la administración centralizada con arquitectura cliente-servidor, control de operaciones y reportes.",
+    technologies: ["Node.js", "Express", "MySQL", "JavaScript", "HTML5/CSS3"],
+    githubUrl: "https://github.com/tu-usuario",
+    liveUrl: "",
+    featured: true,
+  },
+  {
+    id: "alpha-access",
+    title: "Alpha Access",
+    category: "Web App / Frontend",
+    description: "Sistema web de control de acceso interactivo implementando reconocimiento de voz y validación dinámica mediante códigos QR para accesos rápidos.",
+    technologies: ["React", "JavaScript", "Tailwind CSS", "Web APIs"],
+    githubUrl: "https://github.com/tu-usuario",
+    liveUrl: "",
+    featured: true,
+  },
+  {
+    id: "levelup-life",
+    title: "LevelUp Life",
+    category: "PWA / Gamificación",
+    description: "Aplicación web progresiva orientada a la productividad personal, gestión de metas y seguimiento de hábitos diarios bajo mecánicas de gamificación.",
+    technologies: ["React", "Firebase", "Tailwind CSS", "PWA"],
+    githubUrl: "https://github.com/tu-usuario",
+    liveUrl: "",
+    featured: true,
+  },
+  {
+    id: "sueno-americano",
+    title: "Sueño Americano",
+    category: "E-Commerce / Catálogo",
+    description: "Catálogo interactivo y responsivo para exhibición y gestión de prendas de vestir y gorras New Era con filtrado ágil por categoría.",
+    technologies: ["React", "Tailwind CSS", "JavaScript", "Responsive UI"],
+    githubUrl: "https://github.com/tu-usuario",
+    liveUrl: "",
+    featured: false,
+  }
+];
