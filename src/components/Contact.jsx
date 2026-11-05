@@ -1,14 +1,21 @@
 import { useState } from 'react';
 
+const CONTACT_EMAIL = 'jvr5617@gmail.com';
+
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes enlazar servicios como Formspree o EmailJS más adelante
-    setStatus('¡Mensaje enviado con éxito! Te responderé pronto.');
-    setFormData({ name: '', email: '', message: '' });
+    const subject = `Contacto desde el portafolio: ${formData.name}`;
+    const body = `${formData.message}
+
+—
+${formData.name}
+${formData.email}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setStatus('Se abrió tu app de correo con el mensaje listo. Solo falta enviarlo.');
   };
 
   return (
@@ -28,10 +35,11 @@ export default function Contact() {
       <div className="max-w-xl mx-auto rounded-2xl border border-slate-800/80 bg-slate-900/40 p-8 shadow-xl">
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label htmlFor="contact-name" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Nombre
             </label>
             <input
+              id="contact-name"
               type="text"
               required
               placeholder="Tu nombre"
@@ -42,10 +50,11 @@ export default function Contact() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label htmlFor="contact-email" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Correo Electrónico
             </label>
             <input
+              id="contact-email"
               type="email"
               required
               placeholder="tu@correo.com"
@@ -56,10 +65,11 @@ export default function Contact() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label htmlFor="contact-message" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Mensaje
             </label>
             <textarea
+              id="contact-message"
               required
               rows={4}
               placeholder="Cuéntame sobre tu proyecto o propuesta..."
@@ -73,14 +83,21 @@ export default function Contact() {
             type="submit"
             className="w-full py-3.5 px-6 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-semibold text-sm transition-all shadow-lg shadow-cyan-500/20"
           >
-            Enviar Mensaje
+            Redactar correo
           </button>
 
           {status && (
-            <p className="text-center text-xs font-medium text-cyan-400 mt-3">
+            <p role="status" className="text-center text-xs font-medium text-cyan-400 mt-3">
               {status}
             </p>
           )}
+
+          <p className="text-center text-xs text-slate-400">
+            ¿No se abre? Escríbeme directo a{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-cyan-400 hover:text-cyan-300 underline">
+              {CONTACT_EMAIL}
+            </a>
+          </p>
         </form>
       </div>
     </section>

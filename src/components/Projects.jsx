@@ -6,14 +6,14 @@ export default function Projects() {
 
   const categories = [
     { label: 'Todos', value: 'ALL' },
-    { label: 'Full Stack', value: 'Full Stack' },
-    { label: 'Frontend', value: 'Frontend' },
-    { label: 'PWA / Apps', value: 'PWA' }
+    { label: 'Full Stack', value: 'fullstack' },
+    { label: 'Frontend', value: 'frontend' },
+    { label: 'PWA / Apps', value: 'pwa' }
   ];
 
   const filteredProjects = filter === 'ALL'
     ? projectsData
-    : projectsData.filter((p) => p.category.toLowerCase().includes(filter.toLowerCase()));
+    : projectsData.filter((p) => p.types.includes(filter));
 
   return (
     <section id="projects" className="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-slate-800/60">

@@ -19,7 +19,7 @@ export default function ParticleBackground() {
     window.addEventListener('resize', handleResize);
 
     // Crear partículas
-    const particles = Array.from({ length: 45 }, () => ({
+    const particles = Array.from({ length: width < 768 ? 25 : 45 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       radius: Math.random() * 1.5 + 0.5,
@@ -27,6 +27,8 @@ export default function ParticleBackground() {
       vy: (Math.random() - 0.5) * 0.4,
       alpha: Math.random() * 0.5 + 0.2,
     }));
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
@@ -43,18 +45,24 @@ export default function ParticleBackground() {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(6, 182, 212, ${p.alpha})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#06b6d4';
         ctx.fill();
       });
 
-      animationFrameId = requestAnimationFrame(render);
+      if (!reducedMotion) animationFrameId = requestAnimationFrame(render);
     };
+
+    // Pausa la animación cuando la pestaña no está visible
+    const handleVisibility = () => {
+      cancelAnimationFrame(animationFrameId);
+      if (!document.hidden) render();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     render();
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibility);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -62,6 +70,7 @@ export default function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       className="fixed inset-0 pointer-events-none z-0 opacity-70"
     />
   );

@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
- const navLinks = [
+  const navLinks = [
     { name: 'Sobre mí', href: '#about-bento' },
     { name: 'Proyectos', href: '#projects' },
     { name: 'Experiencia', href: '#experience' },
@@ -46,6 +46,8 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-expanded={isOpen}
               className="p-2 text-slate-400 hover:text-white"
             >
               {isOpen ? '✕' : '☰'}

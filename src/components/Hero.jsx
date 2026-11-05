@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
 import profileImg from '../assets/profile1.jpg';
+import { projectsData } from '../data/projects';
+import { skillsData } from '../data/skills';
+
+const PHRASES = [
+  'Software Engineer',
+  'Full Stack Developer',
+  'Node.js & MySQL Builder',
+  'React & Tailwind Specialist',
+];
 
 export default function Hero() {
   const [activeTab, setActiveTab] = useState('terminal');
@@ -9,35 +18,30 @@ export default function Hero() {
     { type: 'system', text: 'Escribe "help" para ver la lista de comandos disponibles.' },
   ]);
 
-  // Efecto Máquina de Escribir (Typewriter)
-  const phrases = [
-    'Software Engineer',
-    'Full Stack Developer',
-    'Node.js & MySQL Builder',
-    'React & Tailwind Specialist'
-  ];
   const [textIndex, setTextIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Efecto Máquina de Escribir: un solo timeout por render, con pausa al terminar la frase
   useEffect(() => {
-    const fullText = phrases[textIndex % phrases.length];
-    const speed = isDeleting ? 40 : 80;
+    const fullText = PHRASES[textIndex % PHRASES.length];
+    const finishedTyping = !isDeleting && currentText === fullText;
+    const delay = finishedTyping ? 1600 : isDeleting ? 40 : 80;
 
     const timer = setTimeout(() => {
-      if (!isDeleting) {
-        setCurrentText(fullText.substring(0, currentText.length + 1));
-        if (currentText === fullText) {
-          setTimeout(() => setIsDeleting(true), 1600);
-        }
-      } else {
-        setCurrentText(fullText.substring(0, currentText.length - 1));
-        if (currentText === '') {
+      if (finishedTyping) {
+        setIsDeleting(true);
+      } else if (isDeleting) {
+        const next = fullText.substring(0, currentText.length - 1);
+        setCurrentText(next);
+        if (next === '') {
           setIsDeleting(false);
           setTextIndex((prev) => prev + 1);
         }
+      } else {
+        setCurrentText(fullText.substring(0, currentText.length + 1));
       }
-    }, speed);
+    }, delay);
 
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, textIndex]);
@@ -58,13 +62,13 @@ export default function Hero() {
         newLogs.push({ type: 'res', text: 'Javi: Desarrollador de Software en Puebla, México.' });
         break;
       case 'skills':
-        newLogs.push({ type: 'res', text: 'Stack: React, Node.js, Express, MySQL, Tailwind, Docker, Python.' });
+        newLogs.push({ type: 'res', text: `Stack: ${skillsData.flatMap((g) => g.skills).slice(0, 10).join(', ')}.` });
         break;
       case 'projects':
-        newLogs.push({ type: 'res', text: 'Proyectos: SIGA-TEC, Alpha Access, LevelUp Life, Sueño Americano.' });
+        newLogs.push({ type: 'res', text: `Proyectos: ${projectsData.map((p) => p.title).join(', ')}.` });
         break;
       case 'contact':
-        newLogs.push({ type: 'res', text: 'Email: contacto@javi.dev | GitHub: github.com' });
+        newLogs.push({ type: 'res', text: 'Email: jvr5617@gmail.com | GitHub: github.com/Jxvx-xlvx' });
         break;
       case 'clear':
         setTerminalLogs([]);
@@ -109,7 +113,7 @@ export default function Hero() {
                 <span>Desarrollador de Software</span>
               </div>
               <p className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
-                <span>📍</span> Tepeaca, Puebla, México <span className="text-slate-600">•</span> <span className="text-cyan-400 font-semibold">Ingeniero en Software</span>
+                <span aria-hidden="true">📍</span> Tepeaca, Puebla, México <span className="text-slate-600">•</span> <span className="text-cyan-400 font-semibold">Ingeniero en Software</span>
               </p>
             </div>
           </div>
@@ -143,7 +147,7 @@ export default function Hero() {
               className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-600 text-slate-950 font-black text-xs uppercase tracking-wider hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] transition-all duration-300 hover:scale-105"
             >
               <span>Explorar Proyectos</span>
-              <span className="transition-transform group-hover:translate-x-1">⚡</span>
+              <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">⚡</span>
             </a>
 
             <a
@@ -157,8 +161,8 @@ export default function Hero() {
           {/* Mini Métricas Flotantes */}
           <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-800/80">
             <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md">
-              <div className="text-2xl font-black text-white font-mono">+4</div>
-              <div className="text-[11px] font-mono text-slate-400">Proyectos Clave</div>
+              <div className="text-2xl font-black text-white font-mono">{projectsData.length}</div>
+              <div className="text-[11px] font-mono text-slate-400">Proyectos</div>
             </div>
             <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md">
               <div className="text-2xl font-black text-cyan-400 font-mono">Full Stack</div>
